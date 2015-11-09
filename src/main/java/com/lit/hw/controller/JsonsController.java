@@ -22,7 +22,7 @@ public class JsonsController {
 	@Autowired
 	UserService userService;
 
-	@RequestMapping(value = "/usersa", method = RequestMethod.GET)
+	@RequestMapping(value = "/users", method = RequestMethod.GET)
 	public ResponseEntity<Map<String, Object>> list() {
 		List<User> listStudent = userService.list();
 		Map<String, Object> map = new HashMap<String, Object>();
