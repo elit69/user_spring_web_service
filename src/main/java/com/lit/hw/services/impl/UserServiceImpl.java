@@ -125,8 +125,31 @@ public class UserServiceImpl implements UserService{
 	}
 
 	public ArrayList<User> search(String keyword, String type) {
-		// TODO Auto-generated method stub
+		String sql = "select * from tbuser where LOWER(" + type
+				+ ") like LOWER(?) ORDER BY " + type;
+		try (Connection cnn = dataSource.getConnection();) {
+			PreparedStatement ps = cnn.prepareStatement(sql);
+			System.out.println(ps.toString());
+			ps.setString(1, keyword + "%");
+			ResultSet rs = ps.executeQuery();
+			ArrayList<User> listUser = new ArrayList<User>();
+			while (rs.next()) {
+				User s = new User();
+				s.setId(rs.getInt("id"));
+				s.setUsername(rs.getString("username"));
+				s.setPassword(rs.getString("password"));
+				s.setEmail(rs.getString("email"));
+				s.setBirthdate(rs.getDate("birthdate"));
+				s.setRegisterdate(rs.getDate("registerdate"));
+				s.setImage(rs.getString("image"));
+				listUser.add(s);
+			}
+			return listUser;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		return null;
 	}
+
 
 }
