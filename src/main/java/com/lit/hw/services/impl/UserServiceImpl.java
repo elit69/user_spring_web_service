@@ -126,7 +126,7 @@ public class UserServiceImpl implements UserService{
 
 	public ArrayList<User> search(String keyword, String type) {
 		String sql = "select * from tbuser where LOWER(" + type
-				+ ") like LOWER(?) ORDER BY " + type;
+				+ ") like LOWER(?) ORDER BY id";
 		try (Connection cnn = dataSource.getConnection();) {
 			PreparedStatement ps = cnn.prepareStatement(sql);
 			System.out.println(ps.toString());

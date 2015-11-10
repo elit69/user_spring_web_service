@@ -80,12 +80,46 @@ public class JsonsController {
 		return new ResponseEntity<Map<String, Object>>(map, status);
 	}
 
+	@RequestMapping(value = "/show/{id}", method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> show(
+			@PathVariable("id") int usrId) {
+		System.out.println("sdfsdfsdfsdfasdfasd");
+		User usr= userService.show(usrId);
+		Map<String, Object> map = new HashMap<String, Object>();
+		HttpStatus status = null;
+		if (usr == null) {
+			map.put("MESSAGE", "RECORD NOT FOUND.");
+			status = HttpStatus.NOT_FOUND;
+		} else {
+			map.put("RESPONSE_DATA", usr);
+			status = HttpStatus.OK;
+		}
+		return new ResponseEntity<Map<String, Object>>(map, status);
+	}
+	
 	@RequestMapping(value = "/search/{type}/{keyword}", method = RequestMethod.GET)
-	public ResponseEntity<Map<String, Object>> search(
+	public ResponseEntity<Map<String, Object>> searchTypeKeyword(
 			@PathVariable("type") String type,
 			@PathVariable("keyword") String keyword) {
-		System.out.println("sdfsdfsdfsdfasdfasd");
+		System.out.println("search action/type:" + type + "/keyword:" + keyword);
 		List<User> listUser = userService.search(keyword, type);
+		Map<String, Object> map = new HashMap<String, Object>();
+		HttpStatus status = null;
+		if (listUser.isEmpty()) {
+			map.put("MESSAGE", "RECORD NOT FOUND.");
+			status = HttpStatus.NOT_FOUND;
+		} else {
+			map.put("RESPONSE_DATA", listUser);
+			status = HttpStatus.OK;
+		}
+		return new ResponseEntity<Map<String, Object>>(map, status);
+	}
+	
+	@RequestMapping(value = "/search/{type}/", method = RequestMethod.GET)
+	public ResponseEntity<Map<String, Object>> searchType(
+			@PathVariable("type") String type) {
+		System.out.println("search action/type:" + type);
+		List<User> listUser = userService.search("", type);
 		Map<String, Object> map = new HashMap<String, Object>();
 		HttpStatus status = null;
 		if (listUser.isEmpty()) {
